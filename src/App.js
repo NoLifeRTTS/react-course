@@ -13,11 +13,7 @@ class App extends Component {
         pageTitle: 'React Components'
     }
 
-    changeTitleHandler = () => {
-
-        const oldTitle = this.state.pageTitle;
-
-        const newTitle = oldTitle + ' (changed)';
+    changeTitleHandler = newTitle => {
 
         this.setState({
             pageTitle: newTitle
@@ -25,8 +21,14 @@ class App extends Component {
 
     }
 
+    handleInput = event => {
+        this.setState({
+            pageTitle: event.target.value
+        })
+    }
+
     render() {
-        
+
         const divStyle = {
             textAlign: 'center'
         }
@@ -37,11 +39,25 @@ class App extends Component {
             <div style={divStyle}>
                 <h1>{this.state.pageTitle}</h1>
 
-                <button onClick={this.changeTitleHandler}>Change title</button>
+                <input type="text" onChange={this.handleInput}/>
 
-                <Car name={cars[0].name} year={cars[0].year} />
-                <Car name={cars[1].name} year={cars[1].year} />
-                <Car name={cars[2].name} year={cars[2].year} />
+                <button onClick={this.changeTitleHandler.bind(this, 'Changed!')}>Change title</button>
+
+                <Car
+                    name={cars[0].name}
+                    year={cars[0].year}
+                    onChangeTitle={this.changeTitleHandler.bind(this, cars[0].name)}
+                />
+                <Car
+                    name={cars[1].name}
+                    year={cars[1].year}
+                    onChangeTitle={() => this.changeTitleHandler(cars[1].name)}
+                />
+                <Car
+                    name={cars[2].name}
+                    year={cars[2].year}
+                    onChangeTitle={() => this.changeTitleHandler(cars[2].name)}
+                />
             </div>
         );
     }
